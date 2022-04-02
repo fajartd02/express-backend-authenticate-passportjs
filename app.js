@@ -58,6 +58,17 @@ app.get("/register", (req, res) => {
 
 app.post("/register", (req, res) => {
     
+    User.register({username: req.body.username}, req.body.password, (err, user) => {
+        if(err) {
+            console.log(err);
+            res.redirect("/register");
+        } else {
+            const authenticate = passport.authenticate("local");
+            authenticate((req, res, () => {
+                res.redirect("/secrets");
+            }));
+        }
+    })
 });
 
 app.post("/login", (req, res) => {
