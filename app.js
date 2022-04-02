@@ -56,6 +56,14 @@ app.get("/register", (req, res) => {
     res.render("register");
 });
 
+app.get("/secrets", (req, res) => {
+    if(req.isAuthenticated()) {
+        res.render("secrets");
+    } else {
+        res.render("/login");
+    }
+});
+
 app.post("/register", (req, res) => {
     
     User.register({username: req.body.username}, req.body.password, (err, user) => {
