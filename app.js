@@ -41,6 +41,7 @@ userSchema.plugin(passportLocalMongoose);
 
 const User = new mongoose.model("User", userSchema);
 
+// WAJIB PAKE BIAR BISA KELIAT LAGI LOGIN SESSION NYA
 passport.use(User.createStrategy());
 
 passport.serializeUser(User.serializeUser());
@@ -73,7 +74,8 @@ app.post("/register", (req, res) => {
             console.log(err);
             res.redirect("/register");
         } else {
-            passport.authenticate("local")(req, res, function() {
+            const registerUser = passport.authenticate("local")
+            registerUser(req, res, () => {
                 res.redirect("/secrets");
             });
         }
