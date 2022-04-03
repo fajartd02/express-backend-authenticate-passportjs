@@ -83,7 +83,28 @@ app.post("/register", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-    res.send("Hello");
+    
+    const user = new User({
+        username: req.body.username,
+        password: req.body.password
+    });
+
+    req.login(user, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            const loginUser = passport.authenticate("local");
+            loginUser(req, res, () => {
+                res.redirect("/secrets");
+            })
+        }
+    })
+
+});
+
+app.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("/");
 });
 
 app.listen(3000, () => {
